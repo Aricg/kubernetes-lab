@@ -1,0 +1,21 @@
+# ingress-nginx-https.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress-https
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  rules:
+  - host: bastion
+    http:
+      paths:
+      - path: /nestedssl
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-https
+            port:
+              number: 443
+

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-https
+spec:
+  selector:
+    matchLabels:
+      app: nginx-https
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-https
+    spec:
+      containers:
+      - name: nginx-https
+        image: localhost:32000/nginx-https:latest # Updated image reference
+        ports:
+        - containerPort: 443
