@@ -18,6 +18,8 @@
  microk8s.enable helm
  #helm will need EXPORT->kubeconfig 
  sudo snap install helm --classic
+ helm install 1.0 example-chart
+
 
 
 #kubectl auth
@@ -33,6 +35,9 @@
    docker tag nginx-https localhost:32000/nginx-https:latest
    docker push localhost:32000/nginx-https:latest
    curl -X GET http://localhost:32000/v2/_catalog
+   docker tag nginx-https localhost:32000/nginx-https:latest
+   docker push localhost:32000/nginx-https:latest
+
 
 
 #ArgoCD

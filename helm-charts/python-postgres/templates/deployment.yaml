@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "python-postgres.fullname" . }}
+  labels:
+    {{- include "python-postgres.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "python-postgres.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "python-postgres.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: Always
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres.testcluster.credentials.postgresql.acid.zalan.do
+              key: username   # Replace 'username' with the appropriate key name if it's different
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres.testcluster.credentials.postgresql.acid.zalan.do
+              key: password
+        - name: POSTGRES_HOST
+          value: "testcluster"
+        - name: POSTGRES_DB
+          value: "your_postgres_db"
