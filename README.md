@@ -7,8 +7,8 @@
 1. Install Microk8s from the 1.27 stable channel:
 ```
 sudo snap install microk8s --classic --channel=1.27/stable
-Enable required Microk8s add-ons:
 ```
+Enable required Microk8s add-ons:
 
 
 ```
@@ -16,8 +16,8 @@ microk8s enable ingress
 microk8s enable dns
 microk8s enable hostpath-storage
 microk8s.enable dashboard
+```
 Setup kubectl alias and manage Microk8s status:
-
 
 ```
 alias kubectl='microk8s kubectl'
