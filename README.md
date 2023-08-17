@@ -40,8 +40,13 @@
   etc
 
 #Postgres operator
+ helm repo add postgres-operator-ui-charts https://opensource.zalando.com/postgres-operator/charts/postgres-operator-ui
+ helm install postgres-operator-ui postgres-operator-ui-charts/postgres-operator-ui
  kubectl --namespace=default get pods -l "app.kubernetes.io/name=postgres-operator"
  kubectl --namespace=default get pods -l "app.kubernetes.io/name=postgres-operator-ui"
+ kubectl port-forward svc/postgres-operator-ui 8081:80
+ #Create manifest.
+ apply -> postgres/testcluster.yaml
  kubectl get secret postgres.testcluster.credentials.postgresql.acid.zalan.do -o jsonpath='{.data.password}' | base64 --decode
  kubectl port-forward pod/testcluster-0 5432:5432\n
 
