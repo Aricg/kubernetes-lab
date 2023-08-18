@@ -140,3 +140,37 @@ Forward a local port to the Postgres pod:
 ```
 kubectl port-forward pod/testcluster-0 5432:5432
 ```
+
+```
+ kubectl describe postgresqls.acid.zalan.do  testcluster
+Name:         testcluster
+Namespace:    default
+Labels:       team=acid
+Annotations:  <none>
+API Version:  acid.zalan.do/v1
+Kind:         postgresql
+Metadata:
+  Creation Timestamp:  2023-08-10T12:09:59Z
+  Generation:          1
+  Resource Version:    130660
+  UID:                 9ae585f8-42c6-4351-8d37-b561bebc20d0
+Spec:
+  Allowed Source Ranges:  <nil>
+  Number Of Instances:    1
+  Postgresql:
+    Version:  15
+  Resources:
+    Limits:
+      Cpu:     500m
+      Memory:  500Mi
+    Requests:
+      Cpu:     100m
+      Memory:  100Mi
+  Team Id:     acid
+  Volume:
+    Size:  10Gi
+Status:
+  Postgres Cluster Status:  Running
+Events:                     <none>
+```
+
