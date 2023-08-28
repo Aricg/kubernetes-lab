@@ -174,3 +174,53 @@ Status:
 Events:                     <none>
 ```
 
+Adding a CUDA-enabled Node to a Local Kubernetes Lab
+This guide will walk you through the steps to add a CUDA-enabled node to your local Kubernetes lab. This will allow you to leverage GPU capabilities within your Kubernetes workloads.
+
+Prerequisites
+A node with an NVIDIA GPU.
+Ubuntu operating system.
+Steps
+1. Install NVIDIA Drivers
+Install the ubuntu-drivers-common package:
+```
+sudo apt install ubuntu-drivers-common
+```
+Check available drivers for your NVIDIA device:
+```
+ubuntu-drivers devices
+```
+Install recommended drivers automatically:
+```
+sudo ubuntu-drivers autoinstall
+```
+Reboot your node:
+```
+sudo reboot
+```
+
+2. Verify NVIDIA GPU Status
+Check the status of your NVIDIA GPU:
+```
+nvidia-smi
+```
+3. Install CUDA Toolkit
+Install the nvidia-cuda-toolkit:
+```
+sudo apt install nvidia-cuda-toolkit
+```
+4. Join the Node to the Kubernetes Cluster
+On your control plane (or master node), initiate the node addition:
+```
+microk8s add-node
+This will display the microk8s join command to be executed on the node you wish to add.
+```
+
+On the node you wish to join, run the displayed microk8s join command:
+```
+microk8s join <CONTROL_PLANE_IP>:<PORT>/<TOKEN> --worker
+```
+Note: The --worker flag ensures the node joins as a worker, without running the control plane components.
+
+Conclusion
+By following the steps above, you should have successfully added a CUDA-enabled node to your local Kubernetes lab. You can now deploy GPU-enabled workloads to leverage the computational power of your NVIDIA GPU.
