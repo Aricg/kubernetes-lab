@@ -174,8 +174,7 @@ Status:
 Events:                     <none>
 ```
 
-Adding a CUDA-enabled Node to a Local Kubernetes Lab
-This guide will walk you through the steps to add a CUDA-enabled node to your local Kubernetes lab. This will allow you to leverage GPU capabilities within your Kubernetes workloads.
+## Adding a CUDA-enabled Node to a Local Kubernetes Lab
 
 Prerequisites
 A node with an NVIDIA GPU.
