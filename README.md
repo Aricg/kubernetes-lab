@@ -235,8 +235,7 @@ cuda1    1                0
 Conclusion
 By following the steps above, you should have successfully added a CUDA-enabled node to your local Kubernetes lab. You can now deploy GPU-enabled workloads to leverage the computational power of your NVIDIA GPU.
 
-#############
-Set up the insecure registry configuration (must be done on both nodes):
+### Set up the insecure registry configuration (must be done on both nodes):
 
 ```
 sudo mkdir -p /var/snap/microk8s/current/args/certs.d/bastion:32000
@@ -261,4 +260,12 @@ Restart MicroK8s on both nodes:
 microk8s stop
 microk8s start
 ```
-############
+
+## Minecraft server
+
+```
+helm repo add minecraft https://itzg.github.io/minecraft-server-charts/
+helm show values minecraft/minecraft > minecraft.yaml
+helm install my-minecraft-release minecraft/minecraft -f minecraft.yaml
+```
+
