@@ -203,23 +203,62 @@ Check the status of your NVIDIA GPU:
 ```
 nvidia-smi
 ```
-3. Install CUDA Toolkit
+3. Install CUDA Toolkit, enable gpu addon, check deamonset
 Install the nvidia-cuda-toolkit:
 ```
 sudo apt install nvidia-cuda-toolkit
-```
-4. Join the Node to the Kubernetes Cluster
-On your control plane (or master node), initiate the node addition:
-```
-microk8s add-node
-This will display the microk8s join command to be executed on the node you wish to add.
+microk8s enable gpu
+microk8s kubectl get daemonset,pods -n gpu-operator-resources
 ```
 
+4. Join the Node to the Kubernetes Cluster
+On your control plane,  initiate the node addition:
+```
+microk8s add-node
+
+```
+This will display the microk8s join command to be executed on the node you wish to add.
 On the node you wish to join, run the displayed microk8s join command:
 ```
 microk8s join <CONTROL_PLANE_IP>:<PORT>/<TOKEN> --worker
 ```
 Note: The --worker flag ensures the node joins as a worker, without running the control plane components.
 
+check if it worked
+```
+ kubectl describe nodes  |  tr -d '\000' | sed -n -e '/^Name/,/Roles/p' -e '/^Capacity/,/Allocatable/p' -e '/^Allocated resources/,/Events/p'  | grep -e Name  -e  nvidia.com  | perl -pe 's/\n//'  |  perl -pe 's/Name:/\n/g' | sed 's/nvidia.com\/gpu:\?//g'  | sed '1s/^/Node Available(GPUs)  Used(GPUs)/' | sed 's/$/ 0 0 0/'  | awk '{print $1, $2, $3}'  | column -t
+Node     Available(GPUs)  Used(GPUs)
+bastion  1                0
+cuda1    1                0
+```
+
 Conclusion
 By following the steps above, you should have successfully added a CUDA-enabled node to your local Kubernetes lab. You can now deploy GPU-enabled workloads to leverage the computational power of your NVIDIA GPU.
+
+#############
+Set up the insecure registry configuration (must be done on both nodes):
+
+```
+sudo mkdir -p /var/snap/microk8s/current/args/certs.d/bastion:32000
+sudo touch /var/snap/microk8s/current/args/certs.d/bastion:32000/hosts.toml
+```
+Then, edit the hosts.toml file:
+
+```
+sudo vim /var/snap/microk8s/current/args/certs.d/bastion:32000/hosts.toml
+```
+And add:
+
+```
+server = "http://bastion:32000"
+
+[host."http://bastion:32000"]
+capabilities = ["pull", "resolve"]
+```
+Restart MicroK8s on both nodes:
+
+```
+microk8s stop
+microk8s start
+```
+############
